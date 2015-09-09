@@ -61,7 +61,7 @@ int main (int argc, char** argv){
 	}
 	exit(1);
 	*/
-	/*{// to test alignment
+	{// to test alignment
 		//scores (1, -2, -6)
 		// >sequence one
 		// AGTGCTGAAAGTTGCGCCAGC-TGAC-
@@ -74,11 +74,16 @@ int main (int argc, char** argv){
 
 		s0 = "agttgg";
 		s1 = "gtt";
-		bio::global_alignment galn (1, -3, -5, -2);
+		//bio::global_alignment galn (1, -3, -5, -2);
+
+		s0 = "a,gtttaacccgg";
+		s1 = ",gttCggttC";
+		bio::global_alignment galn (2, -3, -5, -2, 1, true);
 		galn.set_alignment_type(1);
 		galn (s0, s1);
 		std::cout << galn.path() << "\n";
-	}*/
+		std::cout << "s0: " << s0 << "\ns1: " << s1 << "\n";
+	}
 	//GCTGAACAGTTGCGAGCTTGAC-
 	//GCTGAAC-GTT-CGAGCTTGACG";
 

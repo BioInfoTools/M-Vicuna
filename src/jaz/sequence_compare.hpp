@@ -241,11 +241,27 @@ namespace bio {
   }; // scoring_matrix
 
 
-  inline scoring_matrix make_dummy_sm(int m, int s) {
+  inline scoring_matrix make_dummy_sm(int m, int s, int meth, bool strainF) {
       unsigned char sigma[256];
       for (unsigned int i = 0; i < 256; ++i) sigma[i] = i;
       std::vector<char> matrix(256 * 256, s);
       for (unsigned int i = 0; i < 256; ++i) matrix[(i << 8) + i] = m;
+	if (meth != 0) {
+		unsigned char methlybases[2][7] = {"CTYcty","GARgar"};
+		int x;
+		if (strainF) {
+			x = 0;
+		} else {
+			x = 1;
+		}
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				if (i != j) {
+					matrix[(methlybases[x][i] << 8) + methlybases[x][j]] = meth;
+				}
+			}
+		}
+	}
       return scoring_matrix(sigma, matrix);
   } // make_dummy_sm
 
@@ -344,8 +360,8 @@ namespace bio {
        *  g - Gap opening penalty (negative number).
        *  h - Gap extension penalty (negative number).
        */
-      explicit global_alignment(int m = 0, int s = 0, int g = 0, int h = 0)
-	  : sub_(make_dummy_sm(m, s)), g_(g), h_(h) {
+      explicit global_alignment(int m = 0, int s = 0, int g = 0, int h = 0, int meth = 0, bool strainF = true)
+	  : sub_(make_dummy_sm(m, s, meth, strainF)), g_(g), h_(h) {
     	  	  alignment_type_ = 0;
     	  	  path_prefix_ = path_suffix_ = "";
       }
@@ -535,6 +551,8 @@ namespace bio {
 					if (s0[i - 1] == s1[j - 1]) {
 						match++;
 						path_.push_back('M');
+					} else if ( abs(s0[i - 1] - s1[j - 1])==32 ) {
+						path_.push_back('m');
 					} else path_.push_back('R');
 
 					--i;
