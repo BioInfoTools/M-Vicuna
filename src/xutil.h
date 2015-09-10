@@ -70,7 +70,7 @@ inline double get_time() {
 
 inline void print_time (const std::string& msg, double& timing){
     double cur_time = get_time();
-    std::cout << "\n" << msg << " *** " << (cur_time - timing)/60 << " mins ***\n\n";
+    std::cout << "\n" << msg << " *** " << (cur_time - timing)*1000 << " ms ***\n\n";
     timing = cur_time;
 }
 

@@ -27,4 +27,7 @@ add_executable(mvicuna
   src/main.cpp src/Trim.cpp src/SeqFrqEst.cpp
   src/ReadBioFile.cpp src/DuplRm.cpp src/MergeReadPair.cpp)
 
+add_executable(alnmethly
+  src/main.cpp)
+
 install(TARGETS mvicuna DESTINATION bin)
